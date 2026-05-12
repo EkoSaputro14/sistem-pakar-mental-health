@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/php:8.2
+
+    volumes:
+      - ../:/workspace:cached
+
+    command: sleep infinity
+
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sistem_pakar_mental
+
+    ports:
+      - "3306:3306"
