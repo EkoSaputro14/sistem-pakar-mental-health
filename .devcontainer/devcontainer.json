@@ -1,17 +1,26 @@
 {
-  "name": "Laravel Dev",
+  "name": "Laravel 13 Dev",
 
   "dockerComposeFile": "docker-compose.yml",
-
   "service": "app",
-
+  "runServices": ["mysql", "redis"],
   "workspaceFolder": "/workspace",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
 
   "customizations": {
     "vscode": {
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
+        "onecentlin.laravel-blade",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint"
       ]
@@ -19,6 +28,14 @@
   },
 
   "forwardPorts": [8000, 5173],
+  "portsAttributes": {
+    "8000": {
+      "label": "Laravel (artisan serve)"
+    },
+    "5173": {
+      "label": "Vite"
+    }
+  },
 
-  "postCreateCommand": "composer install && npm install"
+  "postCreateCommand": "bash -lc 'set -e; if [ -f composer.json ]; then composer install; fi; if [ -f package.json ]; then npm install; fi'"
 }
