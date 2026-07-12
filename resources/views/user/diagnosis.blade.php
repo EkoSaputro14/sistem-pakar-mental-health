@@ -63,22 +63,36 @@
                             <x-text-input id="tanggal_lahir" name="tanggal_lahir" type="date" class="mt-1 block w-full" :value="old('tanggal_lahir')" required />
                             <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
                         </div>
-                        <div>
+                        <div x-data="{ openSem: false, semester: '{{ old('semester') }}', semesterLabel: '' }" x-on:click.outside="openSem = false">
                             <x-input-label for="semester" value="Semester" />
-                            <x-custom-select name="semester" id="semester" placeholder="Pilih Semester" :selected="old('semester')" required>
-                                @for ($i = 1; $i <= 14; $i++)
-                                    <x-custom-select-option :value="$i" label="Semester {{ $i }}" />
-                                @endfor
-                            </x-custom-select>
+                            <input type="hidden" name="semester" :value="semester" />
+                            <button type="button" x-on:click="openSem = !openSem" class="mt-1 flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-4 py-2.5 text-sm text-left shadow-sm transition-all duration-200 hover:border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none" :class="{ 'border-teal-500 ring-2 ring-teal-500/20': openSem }">
+                                <span x-text="semesterLabel || 'Pilih Semester'" :class="semesterLabel ? 'text-slate-900 font-medium' : 'text-slate-400'"></span>
+                                <svg class="h-4 w-4 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': openSem }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                            <div x-show="openSem" x-transition class="absolute z-50 mt-1.5 w-full max-w-[calc(100%-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl" style="display:none;">
+                                <div class="max-h-60 overflow-y-auto py-1">
+                                    @for ($i = 1; $i <= 14; $i++)
+                                        <div x-on:click="semester = '{{ $i }}'; semesterLabel = 'Semester {{ $i }}'; openSem = false" class="cursor-pointer px-4 py-2.5 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-700" :class="{ 'bg-teal-50 text-teal-700 font-semibold': semester === '{{ $i }}' }">Semester {{ $i }}</div>
+                                    @endfor
+                                </div>
+                            </div>
                             <x-input-error :messages="$errors->get('semester')" class="mt-2" />
                         </div>
-                        <div>
+                        <div x-data="{ openTahun: false, tahun: '{{ old('tahun_angkatan') }}', tahunLabel: '' }" x-on:click.outside="openTahun = false">
                             <x-input-label for="tahun_angkatan" value="Tahun Angkatan" />
-                            <x-custom-select name="tahun_angkatan" id="tahun_angkatan" placeholder="Pilih Tahun" :selected="old('tahun_angkatan')" required>
-                                @for ($y = date('Y'); $y >= 2015; $y--)
-                                    <x-custom-select-option :value="$y" :label="$y" />
-                                @endfor
-                            </x-custom-select>
+                            <input type="hidden" name="tahun_angkatan" :value="tahun" />
+                            <button type="button" x-on:click="openTahun = !openTahun" class="mt-1 flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-4 py-2.5 text-sm text-left shadow-sm transition-all duration-200 hover:border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none" :class="{ 'border-teal-500 ring-2 ring-teal-500/20': openTahun }">
+                                <span x-text="tahunLabel || 'Pilih Tahun'" :class="tahunLabel ? 'text-slate-900 font-medium' : 'text-slate-400'"></span>
+                                <svg class="h-4 w-4 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': openTahun }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                            <div x-show="openTahun" x-transition class="absolute z-50 mt-1.5 w-full max-w-[calc(100%-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl" style="display:none;">
+                                <div class="max-h-60 overflow-y-auto py-1">
+                                    @for ($y = date('Y'); $y >= 2015; $y--)
+                                        <div x-on:click="tahun = '{{ $y }}'; tahunLabel = '{{ $y }}'; openTahun = false" class="cursor-pointer px-4 py-2.5 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-700" :class="{ 'bg-teal-50 text-teal-700 font-semibold': tahun === '{{ $y }}' }">{{ $y }}</div>
+                                    @endfor
+                                </div>
+                            </div>
                             <x-input-error :messages="$errors->get('tahun_angkatan')" class="mt-2" />
                         </div>
                         <div>
