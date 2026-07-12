@@ -65,22 +65,20 @@
                         </div>
                         <div>
                             <x-input-label for="semester" value="Semester" />
-                            <select id="semester" name="semester" class="mt-1 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200" required>
-                                <option value="">-- Pilih Semester --</option>
+                            <x-custom-select name="semester" id="semester" placeholder="Pilih Semester" :selected="old('semester')" required>
                                 @for ($i = 1; $i <= 14; $i++)
-                                    <option value="{{ $i }}" @selected(old('semester') == $i)>Semester {{ $i }}</option>
+                                    <x-custom-select-option :value="$i" label="Semester {{ $i }}" />
                                 @endfor
-                            </select>
+                            </x-custom-select>
                             <x-input-error :messages="$errors->get('semester')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label for="tahun_angkatan" value="Tahun Angkatan" />
-                            <select id="tahun_angkatan" name="tahun_angkatan" class="mt-1 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200" required>
-                                <option value="">-- Pilih Tahun --</option>
+                            <x-custom-select name="tahun_angkatan" id="tahun_angkatan" placeholder="Pilih Tahun" :selected="old('tahun_angkatan')" required>
                                 @for ($y = date('Y'); $y >= 2015; $y--)
-                                    <option value="{{ $y }}" @selected(old('tahun_angkatan') == $y)>{{ $y }}</option>
+                                    <x-custom-select-option :value="$y" :label="$y" />
                                 @endfor
-                            </select>
+                            </x-custom-select>
                             <x-input-error :messages="$errors->get('tahun_angkatan')" class="mt-2" />
                         </div>
                         <div>

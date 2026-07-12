@@ -21,14 +21,11 @@
                         <input name="search" value="{{ request('search') }}" placeholder="Cari prodi/angkatan..." class="w-full pl-10 rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" />
                     </div>
 
-                    <select name="depression_id" class="w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50">
-                        <option value="">Semua Kategori</option>
+                    <x-custom-select name="depression_id" placeholder="Semua Kategori" :selected="request('depression_id')">
                         @foreach ($depressions as $d)
-                            <option value="{{ $d->id }}" @selected((string) request('depression_id') === (string) $d->id)>
-                                {{ $d->code }} - {{ $d->name }}
-                            </option>
+                            <x-custom-select-option :value="$d->id" label="{{ $d->code }} - {{ $d->name }}" />
                         @endforeach
-                    </select>
+                    </x-custom-select>
 
                     <button class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
                         <i data-lucide="sliders-horizontal" class="h-4 w-4"></i>
