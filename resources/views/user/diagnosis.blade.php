@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Guided assessment</p>
+                <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Panduan Skrining</p>
                 <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
                     Diagnosis Depresi
                 </h2>
@@ -28,6 +28,7 @@
 
     <div
         x-data="{
+            step: 'identitas',
             current: 0,
             symptoms: @js($symptomSteps),
             answers: @js($initialAnswers),
@@ -43,6 +44,62 @@
         <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <form method="POST" action="{{ route('user.diagnosis.submit') }}" class="space-y-6">
                 @csrf
+
+                <!-- Step 1: Identitas -->
+                <section x-show="step === 'identitas'" x-transition.opacity.duration.250ms class="rounded-[2rem] border border-white/70 bg-white/75 p-5 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:p-7">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                            <i data-lucide="user" class="h-6 w-6"></i>
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Langkah 1 dari 2</p>
+                            <h3 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">Identitas Mahasiswa</h3>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            <x-input-label for="tanggal_lahir" value="Tanggal Lahir" />
+                            <x-text-input id="tanggal_lahir" name="tanggal_lahir" type="date" class="mt-1 block w-full" :value="old('tanggal_lahir')" required />
+                            <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-input-label for="semester" value="Semester" />
+                            <select id="semester" name="semester" class="mt-1 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200" required>
+                                <option value="">-- Pilih Semester --</option>
+                                @for ($i = 1; $i <= 14; $i++)
+                                    <option value="{{ $i }}" @selected(old('semester') == $i)>Semester {{ $i }}</option>
+                                @endfor
+                            </select>
+                            <x-input-error :messages="$errors->get('semester')" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-input-label for="tahun_angkatan" value="Tahun Angkatan" />
+                            <select id="tahun_angkatan" name="tahun_angkatan" class="mt-1 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200" required>
+                                <option value="">-- Pilih Tahun --</option>
+                                @for ($y = date('Y'); $y >= 2015; $y--)
+                                    <option value="{{ $y }}" @selected(old('tahun_angkatan') == $y)>{{ $y }}</option>
+                                @endfor
+                            </select>
+                            <x-input-error :messages="$errors->get('tahun_angkatan')" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-input-label for="prodi" value="Program Studi" />
+                            <x-text-input id="prodi" name="prodi" type="text" class="mt-1 block w-full" :value="old('prodi')" placeholder="Contoh: Teknik Informatika" required />
+                            <x-input-error :messages="$errors->get('prodi')" class="mt-2" />
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button type="button" x-on:click="step = 'questions'" class="inline-flex items-center justify-center gap-2 rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:bg-teal-700">
+                            Lanjut ke Pertanyaan
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Step 2: Pertanyaan Diagnosis -->
+                <div x-show="step === 'questions'" x-transition.opacity.duration.250ms>
 
                 <section class="rounded-[2rem] border border-white/70 bg-white/75 p-5 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:p-7">
                     <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -78,11 +135,18 @@
                                     @php
                                         $old = old('answers.'.$symptom->id);
                                         $selected = ((string) $old !== '' ? (float) $old : null) === (float) $opt['value'];
-                                        $tone = match ((string) $opt['value']) {
-                                            '0', '0.0' => 'peer-checked:from-emerald-50 peer-checked:to-teal-50 peer-checked:text-emerald-700 dark:peer-checked:from-emerald-400/10 dark:peer-checked:to-teal-400/10 dark:peer-checked:text-emerald-200',
-                                            '0.3' => 'peer-checked:from-sky-50 peer-checked:to-cyan-50 peer-checked:text-sky-700 dark:peer-checked:from-sky-400/10 dark:peer-checked:to-cyan-400/10 dark:peer-checked:text-sky-200',
-                                            '0.6' => 'peer-checked:from-amber-50 peer-checked:to-orange-50 peer-checked:text-amber-700 dark:peer-checked:from-amber-400/10 dark:peer-checked:to-orange-400/10 dark:peer-checked:text-amber-200',
+                                        $v = (float) $opt['value'];
+                                        $tone = match (true) {
+                                            $v <= 0.0 => 'peer-checked:from-emerald-50 peer-checked:to-teal-50 peer-checked:text-emerald-700 dark:peer-checked:from-emerald-400/10 dark:peer-checked:to-teal-400/10 dark:peer-checked:text-emerald-200',
+                                            $v <= 0.3 => 'peer-checked:from-sky-50 peer-checked:to-cyan-50 peer-checked:text-sky-700 dark:peer-checked:from-sky-400/10 dark:peer-checked:to-cyan-400/10 dark:peer-checked:text-sky-200',
+                                            $v <= 0.6 => 'peer-checked:from-amber-50 peer-checked:to-orange-50 peer-checked:text-amber-700 dark:peer-checked:from-amber-400/10 dark:peer-checked:to-orange-400/10 dark:peer-checked:text-amber-200',
                                             default => 'peer-checked:from-rose-50 peer-checked:to-pink-50 peer-checked:text-rose-700 dark:peer-checked:from-rose-400/10 dark:peer-checked:to-pink-400/10 dark:peer-checked:text-rose-200',
+                                        };
+                                        $icon = match (true) {
+                                            $v <= 0.0 => 'smile',
+                                            $v <= 0.3 => 'cloud-sun',
+                                            $v <= 0.6 => 'cloud-rain',
+                                            default => 'cloud-lightning',
                                         };
                                     @endphp
                                     <label class="group cursor-pointer">
@@ -96,7 +160,7 @@
                                         >
                                         <span class="flex min-h-28 items-center gap-4 rounded-[1.5rem] border border-slate-200 bg-white/80 p-4 text-slate-700 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-teal-200 hover:shadow-lg peer-checked:border-teal-400 peer-checked:bg-gradient-to-br {{ $tone }} peer-checked:shadow-lg peer-focus-visible:ring-2 peer-focus-visible:ring-teal-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:border-teal-300/40">
                                             <span class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-100 text-slate-500 transition group-hover:bg-teal-50 group-hover:text-teal-700 peer-checked:bg-white/80 dark:bg-white/10 dark:text-slate-300">
-                                                <i data-lucide="{{ match ((string) $opt['value']) { '0', '0.0' => 'smile', '0.3' => 'cloud-sun', '0.6' => 'cloud-rain', default => 'cloud-lightning' } }}" class="h-5 w-5"></i>
+                                                <i data-lucide="{{ $icon }}" class="h-5 w-5"></i>
                                             </span>
                                             <span>
                                                 <span class="block text-base font-bold">{{ $opt['label'] }}</span>
@@ -111,10 +175,10 @@
                 </section>
 
                 <section class="flex flex-col-reverse gap-3 rounded-[2rem] border border-white/70 bg-white/75 p-4 shadow-lg shadow-slate-200/40 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:flex-row sm:items-center sm:justify-between">
-                    <a href="{{ route('user.home') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
-                        <i data-lucide="x" class="h-4 w-4"></i>
-                        Batal
-                    </a>
+                    <button type="button" x-on:click="step = 'identitas'" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        Ubah Identitas
+                    </button>
 
                     <div class="flex gap-3">
                         <button type="button" x-on:click="previous()" x-bind:disabled="current === 0" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 sm:flex-none">
@@ -131,6 +195,8 @@
                         </button>
                     </div>
                 </section>
+
+                </div>
             </form>
         </div>
     </div>

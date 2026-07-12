@@ -2,13 +2,13 @@
     <div>
         <div class="inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold text-teal-700 dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-200">
             <i data-lucide="log-in" class="h-3.5 w-3.5"></i>
-            Welcome back
+            Masuk ke Sistem
         </div>
         <h1 class="mt-5 text-3xl font-black tracking-tight text-slate-950 dark:text-white">
             Masuk ke akun Anda
         </h1>
         <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-            Lanjutkan skrining kesehatan mental dan pantau hasil diagnosis Anda dengan nyaman.
+            Lanjutkan manajemen data dan pantau hasil diagnosis mahasiswa.
         </p>
     </div>
 
@@ -29,14 +29,7 @@
         </div>
 
         <div>
-            <div class="flex items-center justify-between gap-3">
-                <x-input-label for="password" :value="__('Password')" class="text-sm font-bold text-slate-700 dark:text-slate-200" />
-                @if (Route::has('password.request'))
-                    <a class="text-xs font-bold text-teal-700 transition hover:text-teal-900 dark:text-teal-300 dark:hover:text-teal-100" href="{{ route('password.request') }}">
-                        Lupa password?
-                    </a>
-                @endif
-            </div>
+            <x-input-label for="password" :value="__('Password')" class="text-sm font-bold text-slate-700 dark:text-slate-200" />
 
             <div class="relative mt-2">
                 <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
@@ -58,11 +51,4 @@
             <i data-lucide="arrow-right" class="h-4 w-4"></i>
         </button>
     </form>
-
-    <p class="mt-8 text-center text-sm text-slate-600 dark:text-slate-300">
-        Belum punya akun?
-        <a href="{{ route('register') }}" class="font-bold text-teal-700 transition hover:text-teal-900 dark:text-teal-300 dark:hover:text-teal-100">
-            Daftar sekarang
-        </a>
-    </p>
 </x-guest-layout>

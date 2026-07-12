@@ -1,0 +1,64 @@
+services:
+  app:
+    build: .
+    container_name: sispak-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: "Sistem Pakar Depresi Mahasiswa"
+      APP_ENV: local
+      APP_KEY: ${APP_KEY:-}
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: depresi_sispak
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - storage:/var/www/html/storage/app
+    networks:
+      - sispak
+
+  mysql:
+    image: mysql:8
+    container_name: sispak-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: depresi_sispak
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - sispak
+
+  redis:
+    image: redis:7-alpine
+    container_name: sispak-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - sispak
+
+volumes:
+  mysql_data:
+  storage:
+
+networks:
+  sispak:

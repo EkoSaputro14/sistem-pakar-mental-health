@@ -52,9 +52,9 @@
                             <i data-lucide="user" class="h-5 w-5"></i>
                         </span>
                         <div>
-                            <div class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Pengguna / Mahasiswa</div>
-                            <div class="mt-1 font-bold text-slate-900 dark:text-white">{{ $diagnosis->user?->name }}</div>
-                            <div class="text-sm text-slate-600 dark:text-slate-400">{{ $diagnosis->user?->email }}</div>
+                            <div class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Identitas Mahasiswa</div>
+                            <div class="mt-1 font-bold text-slate-900 dark:text-white">{{ $diagnosis->prodi ?? '-' }}</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Sem {{ $diagnosis->semester ?? '-' }} · Angkatan {{ $diagnosis->tahun_angkatan ?? '-' }} @if($diagnosis->umur) · {{ $diagnosis->umur }} tahun @endif</div>
                         </div>
                     </div>
                     <div class="flex items-start gap-3.5">

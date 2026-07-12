@@ -31,9 +31,12 @@
         <table class="grid">
             <tr>
                 <td style="width: 33%">
-                    <div class="muted">Pengguna</div>
-                    <div style="font-weight: 700; margin-top: 2px">{{ $diagnosis->user?->name }}</div>
-                    <div class="muted" style="margin-top: 2px">{{ $diagnosis->user?->email }}</div>
+                    <div class="muted">Identitas</div>
+                    <div style="font-weight: 700; margin-top: 2px">{{ $diagnosis->prodi ?? '-' }}</div>
+                    <div class="muted" style="margin-top: 2px">Semester {{ $diagnosis->semester ?? '-' }} · Angkatan {{ $diagnosis->tahun_angkatan ?? '-' }}</div>
+                    @if ($diagnosis->umur)
+                        <div class="muted" style="margin-top: 2px">Umur: {{ $diagnosis->umur }} tahun</div>
+                    @endif
                 </td>
                 <td style="width: 33%">
                     <div class="muted">Tanggal</div>

@@ -21,10 +21,11 @@ class DiagnosisRepository implements DiagnosisRepositoryInterface
     public function paginateForAdmin(?string $search = null, ?int $depressionId = null, int $perPage = 10): LengthAwarePaginator
     {
         return Diagnosis::query()
-            ->with(['user', 'depression'])
+            ->with(['depression'])
             ->when($depressionId, fn ($q) => $q->where('depression_id', $depressionId))
             ->when($search, function ($query, $search) {
-                $query->whereHas('user', fn ($q) => $q->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"));
+                $query->where('prodi', 'like', "%{$search}%")
+                    ->orWhere('tahun_angkatan', 'like', "%{$search}%");
             })
             ->orderByDesc('created_at')
             ->paginate($perPage)

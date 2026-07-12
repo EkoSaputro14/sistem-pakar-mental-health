@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DepressionSeeder::class,
             RuleSeeder::class,
             RecommendationSeeder::class,
+            AnswerOptionSeeder::class,
         ]);
 
         User::updateOrCreate(

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SubmitDiagnosisRequest;
+use App\Models\AnswerOption;
 use App\Models\Diagnosis;
 use App\Repositories\Contracts\SymptomRepositoryInterface;
 use App\Services\CertaintyFactorService;
@@ -20,20 +21,16 @@ class DiagnosisController extends Controller
     {
         $symptoms = $this->symptoms->allActive();
 
-        $answerOptions = [
-            ['label' => 'Tidak Pernah', 'value' => 0.0],
-            ['label' => 'Kadang-kadang', 'value' => 0.3],
-            ['label' => 'Sering', 'value' => 0.6],
-            ['label' => 'Selalu', 'value' => 1.0],
-        ];
+        $answerOptions = AnswerOption::active()->map(fn ($opt) => [
+            'label' => $opt->label,
+            'value' => (float) $opt->value,
+        ])->all();
 
         return view('user.diagnosis', compact('symptoms', 'answerOptions'));
     }
 
     public function store(SubmitDiagnosisRequest $request)
     {
-        $user = $request->user();
-
         /** @var array<string, string|float|int> $answers */
         $answers = $request->validated('answers');
 
@@ -64,20 +61,23 @@ class DiagnosisController extends Controller
             ->mapWithKeys(fn ($r) => [$r->symptom_id => (float) $r->expert_cf])
             ->all();
 
-        $answerLabels = [
-            '0' => 'Tidak Pernah',
-            '0.3' => 'Kadang-kadang',
-            '0.6' => 'Sering',
-            '1' => 'Selalu',
-        ];
+        $answerLabels = AnswerOption::active()
+            ->mapWithKeys(fn ($opt) => [rtrim(rtrim((string) (float) $opt->value, '0'), '.') => $opt->label])
+            ->all();
+
+        $user = $request->user();
 
         /** @var Diagnosis $diagnosis */
-        $diagnosis = DB::transaction(function () use ($user, $bestDepression, $bestCf, $result, $symptoms, $answers, $ruleExpertBySymptomId, $answerLabels) {
+        $diagnosis = DB::transaction(function () use ($user, $bestDepression, $bestCf, $result, $symptoms, $answers, $ruleExpertBySymptomId, $answerLabels, $request) {
             $diagnosis = Diagnosis::create([
-                'user_id' => $user->id,
+                'user_id' => $user?->id,
                 'depression_id' => $bestDepression->id,
                 'cf_value' => round($bestCf, 4),
                 'cf_breakdown' => $result['breakdown'],
+                'tanggal_lahir' => $request->validated('tanggal_lahir'),
+                'semester' => $request->validated('semester'),
+                'tahun_angkatan' => $request->validated('tahun_angkatan'),
+                'prodi' => $request->validated('prodi'),
             ]);
 
             foreach ($symptoms as $symptom) {

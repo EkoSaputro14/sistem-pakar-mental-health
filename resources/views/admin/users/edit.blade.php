@@ -4,7 +4,7 @@
             <div>
                 <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Sistem & Akses</p>
                 <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-                    Edit Pengguna
+                    Detail Pengguna
                 </h2>
             </div>
         </div>
@@ -13,44 +13,25 @@
     <div class="py-6 sm:py-10">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:p-8">
-                <div class="mb-6 pb-6 border-b border-slate-100 dark:border-white/5 flex items-center gap-4">
-                    <span class="grid h-12 w-12 place-items-center rounded-full bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
-                        <i data-lucide="user" class="h-6 w-6"></i>
+                <div class="flex items-center gap-4">
+                    <span class="grid h-14 w-14 place-items-center rounded-full bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                        <i data-lucide="user" class="h-7 w-7"></i>
                     </span>
                     <div>
-                        <div class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Informasi Akun</div>
-                        <div class="font-extrabold text-slate-900 dark:text-white text-lg">{{ $user->name }}</div>
+                        <div class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Admin</div>
+                        <div class="font-extrabold text-slate-900 dark:text-white text-xl">{{ $user->name }}</div>
                         <div class="text-sm text-slate-600 dark:text-slate-400">{{ $user->email }}</div>
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('admin.users.update', $user) }}" class="space-y-6">
-                    @csrf
-                    @method('PUT')
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Role Pengguna</label>
-                        <select name="role" class="mt-2 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" required>
-                            <option value="admin" @selected(old('role', $user->role) === 'admin')>Admin (Akses Penuh)</option>
-                            <option value="user" @selected(old('role', $user->role) === 'user')>User (Mahasiswa / Skrining Only)</option>
-                        </select>
-                        <div class="mt-2 flex gap-2 items-center text-xs text-slate-400 dark:text-slate-500">
-                            <i data-lucide="shield-alert" class="h-3.5 w-3.5 shrink-0"></i>
-                            <span>Perubahan role akan memengaruhi menu navigasi dan hak akses halaman secara instan.</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-white/5">
+                <div class="mt-8 pt-6 border-t border-slate-100 dark:border-white/5">
+                    <div class="flex justify-end">
                         <a href="{{ route('admin.users.index') }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
                             <i data-lucide="arrow-left" class="h-4 w-4"></i>
                             Kembali
                         </a>
-                        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-full bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:bg-teal-700">
-                            <i data-lucide="save" class="h-4 w-4"></i>
-                            Simpan Perubahan
-                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

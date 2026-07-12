@@ -13,7 +13,7 @@ class DiagnosisResultController extends Controller
 
     public function show(Diagnosis $diagnosis)
     {
-        $item = $this->diagnoses->findForUser($diagnosis->id, request()->user()->id);
+        $item = $this->diagnoses->find($diagnosis->id);
         abort_if(! $item, 404);
 
         $confidencePercent = round(((float) $item->cf_value) * 100, 2);
@@ -28,7 +28,7 @@ class DiagnosisResultController extends Controller
 
     public function pdf(Diagnosis $diagnosis)
     {
-        $item = $this->diagnoses->findForUser($diagnosis->id, request()->user()->id);
+        $item = $this->diagnoses->find($diagnosis->id);
         abort_if(! $item, 404);
 
         $confidencePercent = round(((float) $item->cf_value) * 100, 2);

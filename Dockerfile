@@ -1,44 +1,44 @@
-FROM php:8.4-cli
+FROM php:8.4-apache
 
-# System dependencies
+# Install system deps
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    unzip \
-    zip \
-    libzip-dev \
-    libpng-dev \
-    libicu-dev \
-    libonig-dev \
-    libxml2-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    mbstring \
-    zip \
-    intl \
-    exif \
-    pcntl
+    git curl zip unzip libpng-dev libjpeg-dev libfreetype6-dev \
+    libonig-dev libxml2-dev libzip-dev libicu-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache intl \
+    && a2enmod rewrite \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+# Install Node.js (for npm run build)
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install -y nodejs
 
-# Copy files
+WORKDIR /var/www/html
+
+# Copy composer files first for layer caching
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+# Copy the rest
 COPY . .
 
-# Install dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Create .env from example
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
 
-RUN npm install
-RUN npm run build
+# Generate autoload + build frontend
+RUN composer dump-autoload --optimize \
+    && npm ci && npm run build
 
-# Laravel permissions
-RUN chmod -R 775 storage bootstrap/cache
+# Apache config for Laravel
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-EXPOSE 8080
+# Permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 80
+ENTRYPOINT ["docker-entrypoint.sh"]

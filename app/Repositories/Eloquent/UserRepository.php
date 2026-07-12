@@ -8,10 +8,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function paginate(?string $search = null, ?string $role = null, int $perPage = 10): LengthAwarePaginator
+    public function paginate(?string $search = null, int $perPage = 10): LengthAwarePaginator
     {
         return User::query()
-            ->when($role, fn ($q) => $q->where('role', $role))
             ->when($search, function ($q, $search) {
                 $q->where(function ($sub) use ($search) {
                     $sub->where('name', 'like', "%{$search}%")

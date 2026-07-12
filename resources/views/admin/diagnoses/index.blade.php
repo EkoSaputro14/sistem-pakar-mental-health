@@ -18,7 +18,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
                             <i data-lucide="search" class="h-4 w-4"></i>
                         </span>
-                        <input name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="w-full pl-10 rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" />
+                        <input name="search" value="{{ request('search') }}" placeholder="Cari prodi/angkatan..." class="w-full pl-10 rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" />
                     </div>
 
                     <select name="depression_id" class="w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50">
@@ -41,7 +41,7 @@
                         <thead>
                             <tr class="border-b border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-xs">
                                 <th class="py-4 px-4 w-48">Tanggal</th>
-                                <th class="py-4 px-4">Pengguna</th>
+                                <th class="py-4 px-4">Identitas</th>
                                 <th class="py-4 px-4">Hasil Diagnosis</th>
                                 <th class="py-4 px-4 text-center w-36">Tingkat Keyakinan</th>
                                 <th class="py-4 px-4 w-32"></th>
@@ -64,8 +64,8 @@
                                         {{ $item->created_at->format('d M Y H:i') }}
                                     </td>
                                     <td class="py-4 px-4">
-                                        <div class="font-bold text-slate-950 dark:text-white">{{ $item->user?->name }}</div>
-                                        <div class="text-xs text-slate-500 dark:text-slate-400">{{ $item->user?->email }}</div>
+                                        <div class="font-bold text-slate-950 dark:text-white">{{ $item->prodi ?? '-' }}</div>
+                                        <div class="text-xs text-slate-500 dark:text-slate-400">Sem {{ $item->semester ?? '-' }} · {{ $item->tahun_angkatan ?? '-' }} · {{ $item->umur ?? '-' }} th</div>
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-2.5">

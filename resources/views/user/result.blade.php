@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Diagnosis insight</p>
+                <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Hasil Skrining</p>
                 <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
                     Hasil Diagnosis
                 </h2>
@@ -67,6 +67,9 @@
                             <div id="cfBar" class="h-full w-0 rounded-full bg-gradient-to-r from-teal-500 via-sky-400 to-indigo-400 transition-all duration-1000 ease-out"></div>
                         </div>
                         <p class="mt-3 text-xs font-semibold text-slate-500 dark:text-slate-400">CF {{ $diagnosis->cf_value }} • {{ $diagnosis->created_at->format('d M Y H:i') }}</p>
+                        @if ($diagnosis->identitas !== '-')
+                            <p class="mt-1 text-xs font-semibold text-teal-600 dark:text-teal-400">{{ $diagnosis->identitas }}</p>
+                        @endif
                     </div>
                 </div>
 

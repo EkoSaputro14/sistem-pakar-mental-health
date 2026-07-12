@@ -1,180 +1,281 @@
-<laravel-boost-guidelines>
-=== foundation rules ===
-
-# Laravel Boost Guidelines
-
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to ensure the best experience when building Laravel applications.
-
-## Foundational Context
-
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
-
-- php - 8.4
-- laravel/framework (LARAVEL) - v13
-- laravel/prompts (PROMPTS) - v0
-- laravel/boost (BOOST) - v2
-- laravel/breeze (BREEZE) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pail (PAIL) - v1
-- laravel/pint (PINT) - v1
-- phpunit/phpunit (PHPUNIT) - v12
-- alpinejs (ALPINEJS) - v3
-- tailwindcss (TAILWINDCSS) - v3
-
-## Skills Activation
-
-This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
-
-## Conventions
-
-- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
-- Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
-- Check for existing components to reuse before writing a new one.
-
-## Verification Scripts
-
-- Do not create verification scripts or tinker when tests cover that functionality and prove they work. Unit and feature tests are more important.
-
-## Application Structure & Architecture
-
-- Stick to existing directory structure; don't create new base folders without approval.
-- Do not change the application's dependencies without approval.
-
-## Frontend Bundling
-
-- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
-
-## Documentation Files
-
-- You must only create documentation files if explicitly requested by the user.
-
-## Replies
-
-- Be concise in your explanations - focus on what's important rather than explaining obvious details.
-
-=== boost rules ===
-
-# Laravel Boost
-
-## Tools
-
-- Laravel Boost is an MCP server with tools designed specifically for this application. Prefer Boost tools over manual alternatives like shell commands or file reads.
-- Use `database-query` to run read-only queries against the database instead of writing raw SQL in tinker.
-- Use `database-schema` to inspect table structure before writing migrations or models.
-- Use `get-absolute-url` to resolve the correct scheme, domain, and port for project URLs. Always use this before sharing a URL with the user.
-- Use `browser-logs` to read browser logs, errors, and exceptions. Only recent logs are useful, ignore old entries.
-
-## Searching Documentation (IMPORTANT)
-
-- Always use `search-docs` before making code changes. Do not skip this step. It returns version-specific docs based on installed packages automatically.
-- Pass a `packages` array to scope results when you know which packages are relevant.
-- Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
-- Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.
-
-### Search Syntax
-
-1. Use words for auto-stemmed AND logic: `rate limit` matches both "rate" AND "limit".
-2. Use `"quoted phrases"` for exact position matching: `"infinite scroll"` requires adjacent words in order.
-3. Combine words and phrases for mixed queries: `middleware "rate limit"`.
-4. Use multiple queries for OR logic: `queries=["authentication", "middleware"]`.
-
-## Artisan
-
-- Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
-- Inspect routes with `php artisan route:list`. Filter with: `--method=GET`, `--name=users`, `--path=api`, `--except-vendor`, `--only-vendor`.
-- Read configuration values using dot notation: `php artisan config:show app.name`, `php artisan config:show database.default`. Or read config files directly from the `config/` directory.
-- To check environment variables, read the `.env` file directly.
-
-## Tinker
-
-- Execute PHP in app context for debugging and testing code. Do not create models without user approval, prefer tests with factories instead. Prefer existing Artisan commands over custom tinker code.
-- Always use single quotes to prevent shell expansion: `php artisan tinker --execute 'Your::code();'`
-  - Double quotes for PHP strings inside: `php artisan tinker --execute 'User::where("active", true)->count();'`
-
-=== php rules ===
-
-# PHP
-
-- Always use curly braces for control structures, even for single-line bodies.
-- Use PHP 8 constructor property promotion: `public function __construct(public GitHub $github) { }`. Do not leave empty zero-parameter `__construct()` methods unless the constructor is private.
-- Use explicit return type declarations and type hints for all method parameters: `function isAccessible(User $user, ?string $path = null): bool`
-- Use TitleCase for Enum keys: `FavoritePerson`, `BestLake`, `Monthly`.
-- Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
-- Use array shape type definitions in PHPDoc blocks.
-
-=== deployments rules ===
-
-# Deployment
-
-- Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
-
-=== herd rules ===
-
-# Laravel Herd
-
-- The application is served by Laravel Herd at `https?://[kebab-case-project-dir].test`. Use the `get-absolute-url` tool to generate valid URLs. Never run commands to serve the site. It is always available.
-- Use the `herd` CLI to manage services, PHP versions, and sites (e.g. `herd sites`, `herd services:start <service>`, `herd php:list`). Run `herd list` to discover all available commands.
-
-=== tests rules ===
-
-# Test Enforcement
-
-- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
-- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
-
-=== laravel/core rules ===
-
-# Do Things the Laravel Way
-
-- Use `php artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can list available Artisan commands using `php artisan list` and check their parameters with `php artisan [command] --help`.
-- If you're creating a generic PHP class, use `php artisan make:class`.
-- Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
-
-### Model Creation
-
-- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `php artisan make:model --help` to check the available options.
-
-## APIs & Eloquent Resources
-
-- For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
-
-## URL Generation
-
-- When generating links to other pages, prefer named routes and the `route()` function.
-
-## Testing
-
-- When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
-- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
-- When creating tests, make use of `php artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
-
-## Vite Error
-
-- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
-
-=== pint/core rules ===
-
-# Laravel Pint Code Formatter
-
-- If you have modified any PHP files, you must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
-- Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
-
-=== phpunit/core rules ===
-
-# PHPUnit
-
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit {name}` to create a new test.
-- If you see a test using "Pest", convert it to PHPUnit.
-- Every time a test has been updated, run that singular test.
-- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
-- Tests should cover all happy paths, failure paths, and edge cases.
-- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
-
-## Running Tests
-
-- Run the minimal number of tests, using an appropriate filter, before finalizing.
-- To run all tests: `php artisan test --compact`.
-- To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
-
-</laravel-boost-guidelines>
+# AGENTS.md — Sistem Pakar Depresi Mahasiswa (MindCare)
+
+## Project Overview
+
+Sistem pakar diagnosis tingkat depresi mahasiswa menggunakan metode **Certainty Factor (CF)**. Mahasiswa mengisi skrining tanpa login → sistem menghitung CF → menampilkan hasil diagnosis + rekomendasi. Admin mengelola data master (gejala, depresi, rules, rekomendasi, opsi jawaban) dan melihat laporan.
+
+**Stack:** Laravel 13 · PHP 8.4 · MySQL 8 · Tailwind CSS 3 · Alpine.js · Vite 8 · DomPDF
+**Deploy:** Docker (Apache) · Cloudflare Tunnel · `sistempakar-mentalhealth.ekohomelab.online`
+
+---
+
+## Architecture
+
+### Request Flow
+
+```
+Browser → Apache (Docker) → Laravel Router → Middleware → Controller → Repository → Eloquent → MySQL
+                                                                     ↓
+                                                              Blade View (Tailwind + Alpine.js)
+                                                                     ↓
+                                                              DomPDF (export PDF)
+```
+
+### Key Design Decisions
+
+- **No user login for diagnosis.** Mahasiswa langsung isi identitas (tgl lahir, semester, prodi, tahun angkatan) + jawaban gejala → submit. `user_id` di tabel `diagnoses` nullable.
+- **Repository Pattern.** Semua query database via Repository Interface → Eloquent Implementation. Controller tidak langsung query model.
+- **Certainty Factor engine.** `CertaintyFactorService::diagnose()` menghitung CF per depresi: `CF_HE = expert_cf × user_cf`, combine: `CF1 + CF2 × (1 − CF1)`. Ambil depresi CF tertinggi.
+- **Dynamic answer options.** Opsi jawaban (label + nilai CF) disimpan di tabel `answer_options`, bisa di-CRUD dari admin panel. Tidak ada hardcoded values.
+- **Admin-only roles.** Semua user di tabel `users` adalah admin. Tidak ada role selector. Login hanya untuk admin.
+- **Session-based auth.** Laravel Breeze + session driver database.
+
+---
+
+## Directory Structure
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/              # Admin CRUD controllers
+│   │   │   ├── AnswerOptionController.php
+│   │   │   ├── DashboardController.php
+│   │   │   ├── DepressionController.php
+│   │   │   ├── DiagnosisReportController.php
+│   │   │   ├── RecommendationController.php
+│   │   │   ├── RuleController.php
+│   │   │   ├── SymptomController.php
+│   │   │   └── UserController.php
+│   │   ├── Auth/               # Breeze auth (login-only, register disabled)
+│   │   ├── User/
+│   │   │   ├── DiagnosisController.php      # Form identitas + skrining
+│   │   │   ├── DiagnosisResultController.php # Hasil + PDF
+│   │   │   └── HomeController.php           # Landing, tentang, kontak darurat
+│   │   └── ProfileController.php
+│   ├── Middleware/
+│   └── Requests/
+│       └── User/
+│           └── SubmitDiagnosisRequest.php    # Validasi identitas + answers
+├── Models/
+│   ├── AnswerOption.php        # Opsi jawaban (label, value, sort_order, is_active)
+│   ├── Depression.php          # Jenis depresi (code D1/D2/D3, name, description)
+│   ├── Diagnosis.php           # Hasil diagnosis (cf_value, cf_breakdown, identitas)
+│   ├── DiagnosisDetail.php     # Detail per gejala (user_cf, expert_cf, cf_he)
+│   ├── Recommendation.php      # Rekomendasi per depresi
+│   ├── Rule.php                # Hubungan gejala↔depresi + expert_cf
+│   ├── Symptom.php             # Gejala pertanyaan (code, name, question, base_cf)
+│   └── User.php                # Admin user (isAdmin(), role)
+├── Repositories/
+│   ├── Contracts/              # Interfaces
+│   │   ├── DiagnosisRepositoryInterface.php
+│   │   ├── SymptomRepositoryInterface.php
+│   │   └── UserRepositoryInterface.php
+│   └── Eloquent/               # Implementations
+│       ├── DiagnosisRepository.php
+│       ├── SymptomRepository.php
+│       └── UserRepository.php
+└── Services/
+    └── CertaintyFactorService.php  # CF calculation engine
+
+database/
+├── migrations/                 # 13 migrations
+├── seeders/
+│   ├── DatabaseSeeder.php      # Calls all seeders + creates admin/demo user
+│   ├── SymptomSeeder.php
+│   ├── DepressionSeeder.php
+│   ├── RuleSeeder.php
+│   ├── RecommendationSeeder.php
+│   └── AnswerOptionSeeder.php  # Default 4 opsi: Tidak Pernah(0.0) → Selalu(1.0)
+
+resources/views/
+├── admin/                      # Admin panel views
+│   ├── answer-options/         # CRUD opsi jawaban
+│   ├── dashboard.blade.php     # Stats: total mahasiswa, diagnosis, kategori
+│   ├── depressions/            # CRUD jenis depresi
+│   ├── diagnoses/              # Laporan diagnosis (index, show)
+│   ├── recommendations/        # CRUD rekomendasi
+│   ├── rules/                  # CRUD rules
+│   ├── symptoms/               # CRUD gejala
+│   └── users/                  # Data pengguna (read-only, no role edit)
+├── auth/
+│   └── login.blade.php         # Login page (register & forgot-password disabled)
+├── components/                 # Blade components (nav-link, modal, flash, etc)
+├── layouts/
+│   ├── app.blade.php           # Authenticated layout (sidebar + nav)
+│   ├── guest.blade.php         # Guest layout (split card with dark sidebar)
+│   └── navigation.blade.php    # Sticky nav with sliding underline indicator
+├── pdf/
+│   └── diagnosis.blade.php     # PDF template for DomPDF
+└── user/
+    ├── home.blade.php          # Landing page hero + educational section
+    ├── diagnosis.blade.php     # 2-step form: identitas → pertanyaan (Alpine.js)
+    ├── result.blade.php        # Hasil: CF chart + breakdown + rekomendasi
+    ├── about.blade.php         # Tentang depresi
+    └── emergency.blade.php     # Kontak darurat
+```
+
+---
+
+## Routes
+
+### Public (no auth)
+| Method | URI | Name | Description |
+|--------|-----|------|-------------|
+| GET | `/` | user.home | Landing page |
+| GET | `/login` | login | Login form |
+| POST | `/login` | — | Process login |
+| GET | `/tentang-depresi` | user.about | Tentang depresi |
+| GET | `/kontak-darurat` | user.emergency | Kontak darurat |
+| GET | `/diagnosis` | user.diagnosis | Form skrining |
+| POST | `/diagnosis` | user.diagnosis.submit | Submit diagnosis |
+| GET | `/hasil/{diagnosis}` | user.result | Hasil diagnosis |
+| GET | `/hasil/{diagnosis}/pdf` | user.result.pdf | Download PDF |
+
+### Authenticated (admin only)
+| Method | URI | Name | Description |
+|--------|-----|------|-------------|
+| GET | `/admin/dashboard` | admin.dashboard | Dashboard admin |
+| Resource | `/admin/symptoms` | admin.symptoms.* | CRUD gejala |
+| Resource | `/admin/depressions` | admin.depressions.* | CRUD depresi |
+| Resource | `/admin/rules` | admin.rules.* | CRUD rules |
+| Resource | `/admin/recommendations` | admin.recommendations.* | CRUD rekomendasi |
+| Resource | `/admin/answer-options` | admin.answer-options.* | CRUD opsi jawaban |
+| GET | `/admin/diagnoses` | admin.diagnoses.index | Laporan diagnosis |
+| GET | `/admin/diagnoses/{diagnosis}` | admin.diagnoses.show | Detail laporan |
+| GET | `/admin/diagnoses/{diagnosis}/pdf` | admin.diagnoses.pdf | Export PDF |
+| GET | `/admin/users` | admin.users.index | Data pengguna |
+| GET | `/admin/users/{user}/edit` | admin.users.edit | Detail pengguna |
+| POST | `/logout` | logout | Logout |
+
+---
+
+## Database Schema
+
+### Core Tables
+
+**answer_options** — Opsi jawaban skrining (dynamic, admin-manageable)
+- `id`, `label`, `value` (DECIMAL 3,1), `sort_order`, `is_active`, `timestamps`
+
+**symptoms** — Gejala pertanyaan
+- `id`, `code`, `name`, `question`, `base_cf` (DECIMAL), `is_active`, `timestamps`
+
+**depressions** — Jenis/tingkat depresi
+- `id`, `code` (D1/D2/D3), `name`, `description`, `is_active`, `timestamps`
+
+**rules** — Hubungan gejala ↔ depresi
+- `id`, `depression_id` (FK), `symptom_id` (FK), `expert_cf` (DECIMAL), `timestamps`
+
+**recommendations** — Rekomendasi per depresi
+- `id`, `depression_id` (FK), `title`, `content`, `is_active`, `timestamps`
+
+**diagnoses** — Hasil diagnosis mahasiswa
+- `id`, `user_id` (FK, nullable), `depression_id` (FK, nullable), `cf_value` (DECIMAL 6,4), `cf_breakdown` (JSON), `tanggal_lahir` (DATE), `semester`, `tahun_angkatan`, `prodi`, `timestamps`
+
+**diagnosis_details** — Detail per gejala
+- `id`, `diagnosis_id` (FK), `symptom_id` (FK), `user_answer`, `user_cf`, `expert_cf`, `cf_he`, `timestamps`
+
+**users** — Admin users
+- `id`, `name`, `email`, `password`, `role` (admin), `email_verified_at`, `remember_token`, `timestamps`
+
+---
+
+## Key Patterns & Conventions
+
+### Controller Pattern
+```php
+class SomeController extends Controller
+{
+    public function __construct(private readonly SomeRepositoryInterface $repo) {}
+
+    public function index()
+    {
+        $items = $this->repo->paginate(request('search'));
+        return view('admin.some.index', compact('items'));
+    }
+}
+```
+
+### Repository Pattern
+- Interface in `app/Repositories/Contracts/`
+- Implementation in `app/Repositories/Eloquent/`
+- Bind in `AppServiceProvider` using `->needs()`
+- Controllers type-hint interfaces, never concrete classes
+
+### View Pattern
+- All views use `<x-app-layout>` (authenticated) or `<x-guest-layout>` (guest)
+- Glass morphism cards: `rounded-[2rem] border border-white/70 bg-white/75 backdrop-blur-xl shadow-xl`
+- Dark mode: `dark:border-white/10 dark:bg-white/5 dark:text-slate-300`
+- Teal primary: `text-teal-700 bg-teal-600 hover:bg-teal-700`
+- Icons: Lucide (`data-lucide="icon-name"`)
+
+### Validation Pattern
+- Form Requests in `app/Http/Requests/`
+- Use `$request->validated()`, never `$request->all()`
+- Custom messages in Indonesian
+
+### Diagnosis Flow
+1. User visits `/diagnosis`
+2. Step 1: Fill identitas (tanggal_lahir, semester, tahun_angkatan, prodi)
+3. Step 2: Answer symptom questions (dynamic from DB, answer options from `answer_options` table)
+4. Submit → `DiagnosisController::store()` → `CertaintyFactorService::diagnose()`
+5. Create `Diagnosis` + `DiagnosisDetail` records
+6. Redirect to `/hasil/{id}` with CF breakdown + recommendations
+
+### Admin Dashboard
+- Total Mahasiswa = count of `diagnoses` table (not users)
+- Total Diagnosis = count of `diagnoses` table
+- Kategori Depresi = count of `depressions` table
+- Chart.js bar chart for diagnosis distribution
+
+---
+
+## Docker Setup
+
+### Build & Run
+```bash
+docker compose build app
+docker compose up -d
+```
+
+### Containers
+| Container | Image | Port | Description |
+|-----------|-------|------|-------------|
+| sispak-app | php:8.4-apache | 8080→80 | Laravel app |
+| sispak-mysql | mysql:8 | 3307→3306 | Database |
+| sispak-redis | redis:7-alpine | 6380→6379 | Cache |
+
+### Environment
+```env
+APP_NAME="Sistem Pakar Depresi Mahasiswa"
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=depresi_sispak
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+### Entrypoint (`docker-entrypoint.sh`)
+1. Generate APP_KEY if not set
+2. Wait for MySQL (`migrate:status`)
+3. Run migrations + seeders
+4. Cache config/routes/views
+5. Start Apache
+
+---
+
+## Credential Files
+
+- `.env` — Database credentials, app key (gitignored)
+- `docker-entrypoint.sh` — Container startup script
+
+## Gotchas
+
+- `user_id` in `diagnoses` is nullable — mahasiswa tidak perlu login
+- Register & forgot-password routes dihapus — hanya login untuk admin
+- Answer options di-seed dengan `updateOrCreate` berdasarkan `value` — aman re-run
+- `cf_breakdown` stored as JSON — contoh: `{"D1": 0.85, "D2": 0.42, "D3": 0.15}`
+- PDF export via DomPDF — template di `resources/views/pdf/diagnosis.blade.php`
+- Alpine.js `x-data` di diagnosis form mengelola 2 step: `step: 'identitas'` → `step: 'questions'`
+- Dark mode via Tailwind `class` strategy — toggle via localStorage + `document.documentElement.classList.toggle('dark')`

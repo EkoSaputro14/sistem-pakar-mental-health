@@ -2,5 +2,15 @@ node_modules
 vendor
 .git
 .env
-docker
+.dockerignore
+Dockerfile
 docker-compose.yml
+.devcontainer
+.agents
+.claude
+.gemini
+.github
+.editorconfig
+.gitattributes
+.gitignore
+*.md

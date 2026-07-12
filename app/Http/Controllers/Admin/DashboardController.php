@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = User::query()->where('role', 'user')->count();
+        $totalMahasiswa = Diagnosis::query()->count();
         $totalDiagnoses = Diagnosis::query()->count();
         $depressions = Depression::query()->orderBy('code')->get();
 
@@ -21,6 +21,6 @@ class DashboardController extends Controller
             return [$d->code => $count];
         });
 
-        return view('admin.dashboard', compact('totalUsers', 'totalDiagnoses', 'depressions', 'counts'));
+        return view('admin.dashboard', compact('totalMahasiswa', 'totalDiagnoses', 'depressions', 'counts'));
     }
 }

@@ -42,10 +42,10 @@
                             <div>
                                 <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-bold text-teal-100">
                                     <i data-lucide="shield-check" class="h-3.5 w-3.5"></i>
-                                    Private mental health screening
+                                    Skrining kesehatan mental privat
                                 </div>
                                 <h1 class="mt-5 max-w-md text-5xl font-black tracking-tight">
-                                    A calmer way to understand your wellbeing.
+                                    Cara lebih tenang untuk memahami kesehatan Anda.
                                 </h1>
                                 <p class="mt-5 max-w-md text-base leading-7 text-slate-300">
                                     Masuk untuk melanjutkan skrining, melihat riwayat diagnosis, dan membaca rekomendasi yang sesuai.

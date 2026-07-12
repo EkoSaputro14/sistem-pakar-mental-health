@@ -19,7 +19,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Mahasiswa</p>
-                            <h3 class="mt-2 text-4xl font-black text-slate-950 dark:text-white">{{ number_format($totalUsers) }}</h3>
+                            <h3 class="mt-2 text-4xl font-black text-slate-950 dark:text-white">{{ number_format($totalMahasiswa) }}</h3>
                         </div>
                         <span class="grid h-12 w-12 place-items-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-300">
                             <i data-lucide="users" class="h-6 w-6"></i>
