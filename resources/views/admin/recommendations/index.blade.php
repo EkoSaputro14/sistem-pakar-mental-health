@@ -1,57 +1,96 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Rekomendasi</h2>
-            <a href="{{ route('admin.recommendations.create') }}" class="inline-flex items-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">Tambah</a>
+            <div>
+                <p class="text-sm font-semibold text-teal-700 dark:text-teal-300">Manajemen Data</p>
+                <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
+                    Rekomendasi
+                </h2>
+            </div>
+            <a href="{{ route('admin.recommendations.create') }}" class="inline-flex items-center justify-center gap-2 rounded-full bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:bg-teal-700">
+                <i data-lucide="plus" class="h-4 w-4"></i>
+                Tambah Rekomendasi
+            </a>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 sm:py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+            <div class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:p-8">
                 <form method="GET" class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <input name="search" value="{{ request('search') }}" placeholder="Cari judul/isi..." class="w-full sm:w-96 rounded-lg border-gray-300 bg-white text-sm shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700 dark:bg-gray-900" />
-                    <button class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800">Cari</button>
+                    <div class="relative w-full sm:w-96">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                            <i data-lucide="search" class="h-4 w-4"></i>
+                        </span>
+                        <input name="search" value="{{ request('search') }}" placeholder="Cari judul/isi..." class="w-full pl-10 rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" />
+                    </div>
+                    <button class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">Cari</button>
                 </form>
 
                 <div class="mt-6 overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead class="text-left text-gray-500 dark:text-gray-400">
-                            <tr>
-                                <th class="py-2">Kategori</th>
-                                <th class="py-2">Judul</th>
-                                <th class="py-2">Aktif</th>
-                                <th class="py-2"></th>
+                    <table class="min-w-full text-sm text-left">
+                        <thead>
+                            <tr class="border-b border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-xs">
+                                <th class="py-4 px-4 w-48">Kategori Depresi</th>
+                                <th class="py-4 px-4">Rekomendasi</th>
+                                <th class="py-4 px-4 text-center w-28">Status</th>
+                                <th class="py-4 px-4 w-36"></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                        <tbody class="divide-y divide-slate-100 dark:divide-white/5">
                             @forelse ($items as $item)
-                                <tr>
-                                    <td class="py-3">
-                                        <div class="text-xs font-semibold text-sky-700 dark:text-sky-300">{{ $item->depression?->code }}</div>
-                                        <div class="font-medium">{{ $item->depression?->name }}</div>
+                                @php
+                                    $code = $item->depression?->code ?? '';
+                                    $badgeStyle = match($code) {
+                                        'D1' => 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20',
+                                        'D2' => 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/20',
+                                        'D3' => 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-500/20',
+                                        default => 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-500/10 dark:text-slate-300 dark:border-slate-500/20'
+                                    };
+                                @endphp
+                                <tr class="group transition-colors hover:bg-slate-50/50 dark:hover:bg-white/5">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2.5">
+                                            <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold {{ $badgeStyle }}">
+                                                {{ $code }}
+                                            </span>
+                                            <span class="font-bold text-slate-950 dark:text-white">{{ $item->depression?->name }}</span>
+                                        </div>
                                     </td>
-                                    <td class="py-3">
-                                        <div class="font-medium">{{ $item->title }}</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{{ $item->content }}</div>
+                                    <td class="py-4 px-4">
+                                        <div class="font-bold text-slate-950 dark:text-white">{{ $item->title }}</div>
+                                        <div class="mt-1 text-slate-500 dark:text-slate-400 text-xs line-clamp-2 max-w-2xl leading-relaxed">{{ $item->content }}</div>
                                     </td>
-                                    <td class="py-3">
-                                        <span class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {{ $item->is_active ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200' }}">
-                                            {{ $item->is_active ? 'Ya' : 'Tidak' }}
+                                    <td class="py-4 px-4 text-center whitespace-nowrap">
+                                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold {{ $item->is_active ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20' : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-white/5 dark:text-slate-400 dark:border-white/10' }}">
+                                            {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
                                         </span>
                                     </td>
-                                    <td class="py-3 text-right whitespace-nowrap">
-                                        <a href="{{ route('admin.recommendations.edit', $item->id) }}" class="text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-200 font-semibold">Edit</a>
-                                        <form class="inline" method="POST" action="{{ route('admin.recommendations.destroy', $item->id) }}" onsubmit="return confirm('Hapus rekomendasi ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="ml-3 text-rose-700 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-200 font-semibold">Hapus</button>
-                                        </form>
+                                    <td class="py-4 px-4 text-right whitespace-nowrap">
+                                        <div class="inline-flex items-center gap-2">
+                                            <a href="{{ route('admin.recommendations.edit', $item->id) }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10" title="Edit">
+                                                <i data-lucide="pencil" class="h-3.5 w-3.5"></i>
+                                            </a>
+                                            <form class="inline" method="POST" action="{{ route('admin.recommendations.destroy', $item->id) }}" onsubmit="return confirm('Hapus rekomendasi ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-rose-100 bg-white text-rose-600 shadow-sm transition hover:bg-rose-50 hover:text-rose-900 dark:border-rose-500/10 dark:bg-white/5 dark:text-rose-400 dark:hover:bg-rose-500/20" title="Hapus">
+                                                    <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="py-6 text-center text-gray-500 dark:text-gray-400">Data kosong.</td>
+                                    <td colspan="4" class="py-12 text-center text-slate-500 dark:text-slate-400">
+                                        <div class="flex flex-col items-center justify-center gap-3">
+                                            <span class="grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-slate-400 dark:bg-white/5">
+                                                <i data-lucide="database" class="h-6 w-6"></i>
+                                            </span>
+                                            <p class="font-medium text-sm">Data kosong</p>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>

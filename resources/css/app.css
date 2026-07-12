@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes navPillActive {
+  from {
+    transform: scale(0.93);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressRun {
+  0% { width: 0%; }
+  100% { width: 90%; }
+}
+
+.animate-nav-pill-active {
+  animation: navPillActive 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-page-fade-in {
+  animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#top-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0d9488, #0ea5e9);
+  z-index: 9999;
+  width: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease, width 0.1s ease;
+  pointer-events: none;
+}
+
+#top-loading-bar.top-loading-active {
+  opacity: 1;
+  animation: progressRun 1.8s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+}

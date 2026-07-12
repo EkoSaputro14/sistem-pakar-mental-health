@@ -15,4 +15,9 @@ class HomeController extends Controller
     {
         return view('user.about');
     }
+
+    public function emergency()
+    {
+        return view('user.emergency');
+    }
 }

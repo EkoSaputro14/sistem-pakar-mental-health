@@ -14,7 +14,10 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex relative" id="desktop-nav-container">
+                    <!-- Sliding Underline Indicator -->
+                    <div id="nav-indicator" class="absolute bottom-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 ease-out pointer-events-none" style="left: 0; width: 0;"></div>
+
                     @auth
                         @if (Auth::user()->isAdmin())
                             <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
@@ -51,15 +54,21 @@
                             <x-nav-link :href="route('user.history')" :active="request()->routeIs('user.history')">
                                 Riwayat
                             </x-nav-link>
+                            <x-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">
+                                Kontak Darurat
+                            </x-nav-link>
                         @endif
                     @endauth
-
+ 
                     @guest
                         <x-nav-link :href="route('user.home')" :active="request()->routeIs('user.home')">
                             Beranda
                         </x-nav-link>
                         <x-nav-link :href="route('user.about')" :active="request()->routeIs('user.about')">
                             Tentang Depresi
+                        </x-nav-link>
+                        <x-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">
+                            Kontak Darurat
                         </x-nav-link>
                     @endguest
                 </div>
@@ -150,12 +159,14 @@
                     <x-responsive-nav-link :href="route('user.about')" :active="request()->routeIs('user.about')">Tentang Depresi</x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('user.diagnosis')" :active="request()->routeIs('user.diagnosis*')">Diagnosis</x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('user.history')" :active="request()->routeIs('user.history')">Riwayat</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">Kontak Darurat</x-responsive-nav-link>
                 @endif
             @endauth
 
             @guest
                 <x-responsive-nav-link :href="route('user.home')" :active="request()->routeIs('user.home')">Beranda</x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('user.about')" :active="request()->routeIs('user.about')">Tentang Depresi</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">Kontak Darurat</x-responsive-nav-link>
             @endguest
         </div>
 

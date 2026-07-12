@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('user.home');
 Route::get('/tentang-depresi', [HomeController::class, 'about'])->name('user.about');
+Route::get('/kontak-darurat', [HomeController::class, 'emergency'])->name('user.emergency');
 
 Route::get('/dashboard', function () {
     $user = request()->user();
