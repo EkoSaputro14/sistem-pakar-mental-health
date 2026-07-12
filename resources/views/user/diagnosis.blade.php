@@ -32,17 +32,19 @@
             current: 0,
             symptoms: @js($symptomSteps),
             answers: @js($initialAnswers),
-            get unanswered() { return this.symptoms.filter(s => !this.answers[s.id] || this.answers[s.id] === '').length },
+            showError: false,
             get total() { return this.symptoms.length },
-            get answered() { return Object.keys(this.answers).filter((key) => this.answers[key] !== '').length },
+            get answered() { return this.symptoms.filter(s => this.answers[s.id] && this.answers[s.id] !== '').length },
             get progress() { return this.total ? Math.round((this.answered / this.total) * 100) : 0 },
             get currentSymptom() { return this.symptoms[this.current] || {} },
             next() { if (this.current < this.total - 1) this.current++ },
             previous() { if (this.current > 0) this.current-- },
             validate() {
-                if (this.unanswered > 0) {
-                    const firstUnanswered = this.symptoms.findIndex(s => !this.answers[s.id] || this.answers[s.id] === '');
-                    if (firstUnanswered >= 0) this.current = firstUnanswered;
+                this.showError = true;
+                const unanswered = this.symptoms.filter(s => !this.answers[s.id] || this.answers[s.id] === '');
+                if (unanswered.length > 0) {
+                    const firstIdx = this.symptoms.findIndex(s => !this.answers[s.id] || this.answers[s.id] === '');
+                    if (firstIdx >= 0) this.current = firstIdx;
                     return false;
                 }
                 return true;
@@ -262,9 +264,9 @@
 
                 <section class="flex flex-col-reverse gap-3 rounded-[2rem] border border-white/70 bg-white/75 p-4 shadow-lg shadow-slate-200/40 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:flex-row sm:items-center sm:justify-between">
                     <div class="flex flex-col gap-2 sm:flex-1">
-                        <div x-show="unanswered > 0 && step === 'questions'" x-transition class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700">
+                        <div x-show="showError && answered < total && step === 'questions'" x-transition class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700">
                             <i data-lucide="alert-circle" class="inline h-4 w-4 mr-1 -mt-0.5"></i>
-                            <span x-text="unanswered + ' pertanyaan belum dijawab'"></span>
+                            <span x-text="(total - answered) + ' pertanyaan belum dijawab'"></span>
                         </div>
                         <button type="button" x-on:click="step = 'identitas'" class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
                             <i data-lucide="arrow-left" class="h-4 w-4"></i>
