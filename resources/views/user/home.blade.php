@@ -17,29 +17,38 @@
                     </p>
 
                     <div class="flex flex-col gap-3.5 sm:flex-row pt-2">
-                        <a href="{{ route('user.diagnosis') }}" class="inline-flex items-center justify-center gap-2 rounded-full bg-teal-600 px-7 py-4 text-sm font-bold text-white shadow-lg shadow-teal-600/30 transition hover:-translate-y-0.5 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600">
-                            <i data-lucide="clipboard-list" class="h-4 w-4"></i>
+                        <a href="{{ route('user.diagnosis') }}" class="group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-teal-600 px-7 py-4 text-sm font-bold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-700 hover:shadow-xl hover:shadow-teal-600/30">
+                            <i data-lucide="clipboard-list" class="h-4 w-4 transition-transform duration-300 group-hover:scale-110"></i>
                             Mulai Diagnosis Sekarang
                         </a>
-                        <a href="{{ route('user.about') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-7 py-4 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
-                            <i data-lucide="book-open" class="h-4 w-4"></i>
+                        <a href="{{ route('user.about') }}" class="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-slate-200 bg-white/80 px-7 py-4 text-sm font-bold text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-md hover:border-slate-300">
+                            <i data-lucide="book-open" class="h-4 w-4 transition-transform duration-300 group-hover:scale-110"></i>
                             Pelajari Tingkat Depresi
                         </a>
                     </div>
 
                     <!-- Client Trust Mock Stats -->
-                    <div class="grid grid-cols-3 gap-6 pt-6 border-t border-slate-200/60 dark:border-white/5 max-w-lg">
-                        <div>
-                            <p class="text-2xl font-extrabold text-slate-900 dark:text-white">100%</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Privat & Aman</p>
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/60 max-w-lg">
+                        <div class="group rounded-2xl border border-slate-100 bg-white/80 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-teal-200">
+                            <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-50 text-teal-600 transition group-hover:bg-teal-100">
+                                <i data-lucide="shield-check" class="h-4 w-4"></i>
+                            </span>
+                            <p class="mt-3 text-xl font-extrabold text-slate-900">100%</p>
+                            <p class="mt-0.5 text-xs text-slate-500 font-medium">Privat & Aman</p>
                         </div>
-                        <div>
-                            <p class="text-2xl font-extrabold text-slate-900 dark:text-white">9+ Gejala</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Sesuai Standar Klinis</p>
+                        <div class="group rounded-2xl border border-slate-100 bg-white/80 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-sky-200">
+                            <span class="grid h-9 w-9 place-items-center rounded-xl bg-sky-50 text-sky-600 transition group-hover:bg-sky-100">
+                                <i data-lucide="list-checks" class="h-4 w-4"></i>
+                            </span>
+                            <p class="mt-3 text-xl font-extrabold text-slate-900">9+</p>
+                            <p class="mt-0.5 text-xs text-slate-500 font-medium">Gejala Klinis</p>
                         </div>
-                        <div>
-                            <p class="text-2xl font-extrabold text-slate-900 dark:text-white">Certainty Factor</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Perhitungan Terukur</p>
+                        <div class="group rounded-2xl border border-slate-100 bg-white/80 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-indigo-200">
+                            <span class="grid h-9 w-9 place-items-center rounded-xl bg-indigo-50 text-indigo-600 transition group-hover:bg-indigo-100">
+                                <i data-lucide="brain-circuit" class="h-4 w-4"></i>
+                            </span>
+                            <p class="mt-3 text-xl font-extrabold text-slate-900">CF</p>
+                            <p class="mt-0.5 text-xs text-slate-500 font-medium">Terukur & Akurat</p>
                         </div>
                     </div>
                 </div>
@@ -85,37 +94,37 @@
             </div>
 
             <div class="grid gap-6 md:grid-cols-3 mt-12">
-                <div class="rounded-[2rem] border border-white/70 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 flex flex-col justify-between">
-                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                <div class="group rounded-[2rem] border border-slate-100 bg-white/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-teal-200 flex flex-col justify-between">
+                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-600 transition group-hover:bg-teal-100 group-hover:scale-105">
                         <i data-lucide="graduation-cap" class="h-6 w-6"></i>
                     </span>
                     <div class="mt-6">
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tekanan Akademis Tinggi</h3>
-                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                        <h3 class="text-lg font-bold text-slate-900">Tekanan Akademis Tinggi</h3>
+                        <p class="text-sm text-slate-500 mt-2 leading-relaxed">
                             Tuntutan indeks prestasi, tenggat waktu tugas, dan kekhawatiran masa depan pasca-kampus memicu kecemasan konstan.
                         </p>
                     </div>
                 </div>
 
-                <div class="rounded-[2rem] border border-white/70 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 flex flex-col justify-between">
-                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                <div class="group rounded-[2rem] border border-slate-100 bg-white/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-sky-200 flex flex-col justify-between">
+                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-sky-50 text-sky-600 transition group-hover:bg-sky-100 group-hover:scale-105">
                         <i data-lucide="users" class="h-6 w-6"></i>
                     </span>
                     <div class="mt-6">
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Perubahan Lingkungan Sosial</h3>
-                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                        <h3 class="text-lg font-bold text-slate-900">Perubahan Lingkungan Sosial</h3>
+                        <p class="text-sm text-slate-500 mt-2 leading-relaxed">
                             Hidup merantau jauh dari keluarga dan proses adaptasi pertemanan baru berpotensi memicu perasaan kesepian yang intens.
                         </p>
                     </div>
                 </div>
 
-                <div class="rounded-[2rem] border border-white/70 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 flex flex-col justify-between">
-                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                <div class="group rounded-[2rem] border border-slate-100 bg-white/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-amber-200 flex flex-col justify-between">
+                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-amber-50 text-amber-600 transition group-hover:bg-amber-100 group-hover:scale-105">
                         <i data-lucide="sparkles" class="h-6 w-6"></i>
                     </span>
                     <div class="mt-6">
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Pencegahan Sejak Dini</h3>
-                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                        <h3 class="text-lg font-bold text-slate-900">Pencegahan Sejak Dini</h3>
+                        <p class="text-sm text-slate-500 mt-2 leading-relaxed">
                             Melakukan skrining awal membantu Anda mengenali gejala depresi lebih awal sehingga penanganan mandiri atau profesional dapat segera berjalan.
                         </p>
                     </div>
