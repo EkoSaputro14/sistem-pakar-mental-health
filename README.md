@@ -166,4 +166,4 @@ MIT License
 
 ---
 
-**Dibuat untuk skripsi/tugas akhir** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
+**Dibuat untuk UAS Universitas Harkat Negeri Semester 6 ** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
