@@ -118,6 +118,7 @@
                             try { this.riwayat = JSON.parse(localStorage.getItem('mindcare_riwayat') || '[]'); } catch(e) {}
                         },
                         removeItem(id) {
+                            if (!confirm('Hapus riwayat ini?')) return;
                             this.riwayat = this.riwayat.filter(r => r.id !== id);
                             localStorage.setItem('mindcare_riwayat', JSON.stringify(this.riwayat));
                         },
