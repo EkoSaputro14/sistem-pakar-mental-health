@@ -10,6 +10,17 @@ Sistem pakar berbasis web untuk skrining tingkat depresi mahasiswa menggunakan m
 
 ---
 
+## 👥 Anggota Kelompok
+
+| No | Nama |
+|:--:|------|
+| 1 | Eko Saputro |
+| 2 | Imzy Zulijar Setiawan |
+| 3 | Yesa Anggit Prayugo |
+| 4 | Feldi Sanjaya |
+
+---
+
 ## ✨ Fitur
 
 ### Untuk Mahasiswa (Tanpa Login)
@@ -141,4 +152,4 @@ MIT License
 
 ---
 
-**Dibuat untuk skripsi/tugas akhir** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
+**Dibuat untuk tugas akhir Mata Kuliah Sistem Pakar** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
