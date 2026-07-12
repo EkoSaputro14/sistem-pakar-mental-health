@@ -110,6 +110,71 @@
                     </div>
                 </section>
 
+                <!-- Riwayat Diagnosis (localStorage) -->
+                <section
+                    x-data="{
+                        riwayat: [],
+                        init() {
+                            try { this.riwayat = JSON.parse(localStorage.getItem('mindcare_riwayat') || '[]'); } catch(e) {}
+                        },
+                        removeItem(id) {
+                            this.riwayat = this.riwayat.filter(r => r.id !== id);
+                            localStorage.setItem('mindcare_riwayat', JSON.stringify(this.riwayat));
+                        },
+                        badgeClass(code) {
+                            return {
+                                'D1': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                'D2': 'bg-amber-50 text-amber-700 border-amber-200',
+                                'D3': 'bg-rose-50 text-rose-700 border-rose-200',
+                            }[code] || 'bg-slate-50 text-slate-700 border-slate-200';
+                        }
+                    }"
+                    x-show="riwayat.length > 0"
+                    x-transition.opacity.duration.300ms
+                    class="rounded-[2rem] border border-white/70 bg-white/75 p-5 shadow-xl shadow-slate-200/50 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:p-7"
+                >
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sky-50 text-sky-600 dark:bg-sky-400/10 dark:text-sky-300">
+                                <i data-lucide="history" class="h-5 w-5"></i>
+                            </span>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-950 dark:text-white">Riwayat Diagnosis</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Hasil skrining sebelumnya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 max-h-64 overflow-y-auto">
+                        <template x-for="item in riwayat.slice(0, 5)" :key="item.id">
+                            <div class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 bg-white/80 px-4 py-3 transition hover:border-slate-200 dark:border-white/10 dark:bg-white/5">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-[0.65rem] font-bold shrink-0"
+                                        :class="badgeClass(item.result)"
+                                        x-text="item.result"></span>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-bold text-slate-900 dark:text-white truncate" x-text="item.name"></p>
+                                        <p class="text-xs text-slate-400" x-text="item.date"></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-xs font-bold text-teal-600 dark:text-teal-400" x-text="(item.cf * 100).toFixed(1) + '%'"></span>
+                                    <a :href="'/hasil/' + item.id" class="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-400" title="Lihat detail">
+                                        <i data-lucide="eye" class="h-3.5 w-3.5"></i>
+                                    </a>
+                                    <button x-on:click="removeItem(item.id)" class="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-rose-100 bg-white text-rose-400 transition hover:bg-rose-50 hover:text-rose-600 dark:border-rose-500/10 dark:bg-white/5" title="Hapus">
+                                        <i data-lucide="x" class="h-3.5 w-3.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <p x-show="riwayat.length > 5" class="mt-3 text-xs text-slate-400 text-center">
+                        Menampilkan 5 dari <span x-text="riwayat.length"></span> riwayat
+                    </p>
+                </section>
+
                 <!-- Step 2: Pertanyaan Diagnosis -->
                 <div x-show="step === 'questions'" x-transition.opacity.duration.250ms>
 

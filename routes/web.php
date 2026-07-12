@@ -25,8 +25,6 @@ Route::post('/diagnosis', [UserDiagnosisController::class, 'store'])->middleware
 Route::get('/hasil/{diagnosis}', [DiagnosisResultController::class, 'show'])->name('user.result');
 Route::get('/hasil/{diagnosis}/pdf', [DiagnosisResultController::class, 'pdf'])->name('user.result.pdf');
 
-Route::get('/riwayat', fn () => view('user.history'))->name('user.history');
-
 Route::get('/dashboard', function () {
     $user = request()->user();
     if (! $user) {
