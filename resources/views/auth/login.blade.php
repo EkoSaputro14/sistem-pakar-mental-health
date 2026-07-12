@@ -8,7 +8,7 @@
             Masuk ke akun Anda
         </h1>
         <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-            Lanjutkan manajemen data dan pantau hasil diagnosis mahasiswa.
+            Masuk untuk mengelola data master dan melihat laporan diagnosis mahasiswa.
         </p>
     </div>
 

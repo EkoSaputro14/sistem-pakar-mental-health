@@ -42,21 +42,21 @@
                             <div>
                                 <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-bold text-teal-100">
                                     <i data-lucide="shield-check" class="h-3.5 w-3.5"></i>
-                                    Skrining kesehatan mental privat
+                                    Panel Administrasi
                                 </div>
                                 <h1 class="mt-5 max-w-md text-5xl font-black tracking-tight">
-                                    Cara lebih tenang untuk memahami kesehatan Anda.
+                                    Kelola sistem pakar dari satu tempat.
                                 </h1>
                                 <p class="mt-5 max-w-md text-base leading-7 text-slate-300">
-                                    Masuk untuk melanjutkan skrining, melihat riwayat diagnosis, dan membaca rekomendasi yang sesuai.
+                                    Masuk sebagai admin untuk mengelola data gejala, depresi, rules, rekomendasi, dan melihat laporan diagnosis mahasiswa.
                                 </p>
                             </div>
 
                             <div class="grid gap-3">
                                 @foreach ([
-                                    ['lock-keyhole', 'Data pribadi tersimpan aman di akun Anda.'],
-                                    ['sparkles', 'Alur diagnosis dibuat bertahap dan tidak melelahkan.'],
-                                    ['bar-chart-3', 'Hasil ditampilkan dengan persentase dan insight visual.'],
+                                    ['layout-dashboard', 'Dashboard dengan statistik dan grafik diagnosis.'],
+                                    ['database', 'Kelola master data gejala, depresi, dan rules.'],
+                                    ['file-text', 'Laporan lengkap hasil diagnosis mahasiswa.'],
                                 ] as [$icon, $copy])
                                     <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
                                         <span class="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-teal-100">
