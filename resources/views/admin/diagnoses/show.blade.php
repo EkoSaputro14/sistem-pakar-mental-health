@@ -138,6 +138,11 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- CF Breakdown Chart -->
+                        <div class="mt-6 h-56">
+                            <canvas id="cfChart" class="h-full w-full"></canvas>
+                        </div>
                     </div>
 
                     <!-- Symptoms Details -->
@@ -225,6 +230,55 @@
             if (!bar) return;
             requestAnimationFrame(() => {
                 bar.style.width = Math.max(0, Math.min(100, target)) + '%';
+            });
+        })();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script>
+        (() => {
+            const ctx = document.getElementById('cfChart');
+            if (!ctx || !window.Chart) return;
+
+            const breakdown = @json($diagnosis->cf_breakdown ?? []);
+            const labels = Object.keys(breakdown);
+            const data = labels.map(k => Math.round((parseFloat(breakdown[k]) || 0) * 100 * 100) / 100);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Persentase CF',
+                        data,
+                        borderRadius: 14,
+                        borderSkipped: false,
+                        backgroundColor: ['#0d9488', '#38bdf8', '#818cf8', '#f59e0b', '#fb7185'],
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => `${c.parsed.y}%`,
+                            },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(148, 163, 184, 0.12)' },
+                            ticks: { callback: (v) => `${v}%` },
+                        },
+                        x: {
+                            grid: { display: false },
+                        },
+                    },
+                },
             });
         })();
     </script>
