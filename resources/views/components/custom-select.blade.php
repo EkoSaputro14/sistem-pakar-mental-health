@@ -6,8 +6,10 @@
         value: '{{ $selected ?? '' }}',
         label: '',
         init() {
-            const opt = this.$refs.options.querySelector(`[data-value=\"${this.value}\"]`);
-            if (opt) this.label = opt.textContent.trim();
+            this.$nextTick(() => {
+                const opt = this.$refs.options?.querySelector('[data-value=\"' + this.value + '\"]');
+                if (opt) this.label = opt.dataset.label || opt.textContent.trim();
+            });
         },
         select(val, lbl) {
             this.value = val;
@@ -42,6 +44,7 @@
         x-transition:leave-end="opacity-0 translate-y-1"
         x-ref="options"
         class="absolute z-50 mt-1.5 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50"
+        style="display: none;"
     >
         <div class="max-h-60 overflow-y-auto py-1">
             {{ $slot }}
