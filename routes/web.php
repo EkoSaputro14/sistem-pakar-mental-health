@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\DiagnosisController as UserDiagnosisController;
 use App\Http\Controllers\User\DiagnosisResultController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Middleware\DiagnosisRateLimit;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('user.home');
@@ -19,10 +20,12 @@ Route::get('/tentang-depresi', [HomeController::class, 'about'])->name('user.abo
 Route::get('/kontak-darurat', [HomeController::class, 'emergency'])->name('user.emergency');
 
 Route::get('/diagnosis', [UserDiagnosisController::class, 'create'])->name('user.diagnosis');
-Route::post('/diagnosis', [UserDiagnosisController::class, 'store'])->name('user.diagnosis.submit');
+Route::post('/diagnosis', [UserDiagnosisController::class, 'store'])->middleware(DiagnosisRateLimit::class)->name('user.diagnosis.submit');
 
 Route::get('/hasil/{diagnosis}', [DiagnosisResultController::class, 'show'])->name('user.result');
 Route::get('/hasil/{diagnosis}/pdf', [DiagnosisResultController::class, 'pdf'])->name('user.result.pdf');
+
+Route::get('/riwayat', fn () => view('user.history'))->name('user.history');
 
 Route::get('/dashboard', function () {
     $user = request()->user();

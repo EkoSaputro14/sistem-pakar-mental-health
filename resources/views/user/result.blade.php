@@ -217,4 +217,28 @@
             });
         })();
     </script>
+
+    <script>
+        // Simpan diagnosis ID ke localStorage
+        (() => {
+            try {
+                const id = {{ $diagnosis->id }};
+                const key = 'mindcare_riwayat';
+                let list = JSON.parse(localStorage.getItem(key) || '[]');
+                // Cegah duplikat
+                if (!list.some(r => r.id === id)) {
+                    list.unshift({
+                        id: id,
+                        date: '{{ $diagnosis->created_at->format("Y-m-d H:i") }}',
+                        result: '{{ $diagnosis->depression?->code ?? "-" }}',
+                        name: '{{ addslashes($diagnosis->depression?->name ?? "-") }}',
+                        cf: {{ $diagnosis->cf_value }}
+                    });
+                    // Simpan max 50 riwayat
+                    if (list.length > 50) list = list.slice(0, 50);
+                    localStorage.setItem(key, JSON.stringify(list));
+                }
+            } catch(e) {}
+        })();
+    </script>
 </x-app-layout>

@@ -57,6 +57,9 @@
                         <x-nav-link :href="route('user.diagnosis')" :active="request()->routeIs('user.diagnosis*')">
                             Diagnosis
                         </x-nav-link>
+                        <x-nav-link :href="route('user.history')" :active="request()->routeIs('user.history')">
+                            Riwayat
+                        </x-nav-link>
                         <x-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">
                             Kontak Darurat
                         </x-nav-link>
@@ -141,6 +144,7 @@
                 <x-responsive-nav-link :href="route('user.home')" :active="request()->routeIs('user.home')">Beranda</x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('user.about')" :active="request()->routeIs('user.about')">Tentang Depresi</x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('user.diagnosis')" :active="request()->routeIs('user.diagnosis*')">Diagnosis</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('user.history')" :active="request()->routeIs('user.history')">Riwayat</x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('user.emergency')" :active="request()->routeIs('user.emergency')">Kontak Darurat</x-responsive-nav-link>
             @endguest
         </div>
