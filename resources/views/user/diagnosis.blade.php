@@ -164,7 +164,6 @@
                                             </span>
                                             <span>
                                                 <span class="block text-base font-bold">{{ $opt['label'] }}</span>
-                                                <span class="mt-1 block text-xs font-semibold text-slate-500 dark:text-slate-400">CF User {{ $opt['value'] }}</span>
                                             </span>
                                         </span>
                                     </label>
