@@ -18,13 +18,11 @@
 
                     <div>
                         <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Kategori Depresi</label>
-                        <select name="depression_id" class="mt-2 block w-full rounded-xl border-slate-200 bg-white/70 text-sm shadow-sm focus:border-teal-500 focus:ring-teal-500 dark:border-white/10 dark:bg-slate-900/50" required>
+                        <x-custom-select name="depression_id" placeholder="Pilih Kategori" :selected="old('depression_id')" required>
                             @foreach ($depressions as $d)
-                                <option value="{{ $d->id }}" @selected((string) old('depression_id') === (string) $d->id)>
-                                    {{ $d->code }} - {{ $d->name }}
-                                </option>
+                                <x-custom-select-option :value="$d->id" label="{{ $d->code }} - {{ $d->name }}" />
                             @endforeach
-                        </select>
+                        </x-custom-select>
                         @error('depression_id')
                             <p class="mt-1 text-xs text-rose-600 dark:text-rose-400 font-semibold">{{ $message }}</p>
                         @enderror
