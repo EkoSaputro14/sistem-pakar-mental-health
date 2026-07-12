@@ -1,20 +1,15 @@
-@props(['name', 'id' => null, 'options' => [], 'selected' => null, 'placeholder' => 'Pilih...', 'required' => false])
+@props(['name', 'id' => null, 'selected' => null, 'placeholder' => 'Pilih...', 'required' => false])
 
 <div
     x-data="{
         open: false,
-        value: '{{ $selected ?? '' }}',
+        value: @js($selected ?? ''),
         label: '',
         init() {
             this.$nextTick(() => {
-                const opt = this.$refs.options?.querySelector('[data-value=\"' + this.value + '\"]');
-                if (opt) this.label = opt.dataset.label || opt.textContent.trim();
+                const el = this.$el.querySelector('[data-value=\"' + this.value + '\"]');
+                if (el) this.label = el.dataset.label;
             });
-        },
-        select(val, lbl) {
-            this.value = val;
-            this.label = lbl;
-            this.open = false;
         }
     }"
     x-on:click.outside="open = false"
@@ -39,10 +34,9 @@
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 translate-y-1"
         x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 translate-y-1"
-        x-ref="options"
+        x-transition:leave="transition ease-in duration-100"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
         class="absolute z-50 mt-1.5 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50"
         style="display: none;"
     >
