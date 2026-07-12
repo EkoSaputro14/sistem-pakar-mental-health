@@ -14,10 +14,11 @@ Sistem pakar berbasis web untuk skrining tingkat depresi mahasiswa menggunakan m
 
 ### Untuk Mahasiswa (Tanpa Login)
 - **Diagnosis Langsung** — Isi identitas (semester, prodi, tahun angkatan, tanggal lahir) lalu jawab pertanyaan gejala
-- **Hasil Real-time** — Lihat tingkat depresi (Mild/Moderate/Severe) dengan persentase CF
-- **Detail Breakdown** — Perbandingan CF per kategori depresi dengan Chart.js
+- **Hasil Sederhana** — Lihat tingkat depresi (Mild/Moderate/Severe) dengan persentase keyakinan
+- **Daftar Gejala** — Lihat gejala yang dijawab dengan badge warna (Tidak Pernah → Selalu)
 - **Rekomendasi** — Saran penanganan berdasarkan hasil diagnosis
 - **Export PDF** — Download hasil diagnosis dalam format PDF
+- **Riwayat** — Hasil diagnosis tersimpan di browser (localStorage, max 50 riwayat)
 - **Privat** — Tidak perlu login, data identitas tersimpan di hasil diagnosis
 
 ### Untuk Admin
@@ -27,7 +28,7 @@ Sistem pakar berbasis web untuk skrining tingkat depresi mahasiswa menggunakan m
 - **Kelola Rules** — Hubungkan gejala dengan depresi + nilai CF pakar
 - **Kelola Rekomendasi** — CRUD saran penanganan per tingkat depresi
 - **Opsi Jawaban** — Konfigurasi pilihan jawaban (label + nilai CF) dari admin panel
-- **Laporan** — Lihat semua hasil diagnosis + filter + export PDF
+- **Laporan + Chart** — Lihat semua hasil diagnosis + filter + chart CF breakdown + export PDF
 - **Kelola Pengguna** — Lihat daftar admin
 
 ---
@@ -42,7 +43,7 @@ Sistem pakar berbasis web untuk skrining tingkat depresi mahasiswa menggunakan m
 | **Build** | Vite 8 |
 | **PDF** | DomPDF (barryvdh/laravel-dompdf) |
 | **Icons** | Lucide |
-| **Charts** | Chart.js 4 |
+| **Charts** | Chart.js 4 (admin only) |
 | **Deploy** | Docker (PHP 8.4 Apache) |
 
 ---
@@ -52,40 +53,24 @@ Sistem pakar berbasis web untuk skrining tingkat depresi mahasiswa menggunakan m
 ### Docker (Recommended)
 
 ```bash
-# Clone repository
 git clone https://github.com/EkoSaputro14/sistem-pakar-mental-health.git
 cd sistem-pakar-mental-health
-
-# Build & run
 docker compose build app
 docker compose up -d
-
-# App berjalan di http://localhost:8080
+# http://localhost:8080
 ```
 
 ### Manual (Laragon/XAMPP)
 
 ```bash
-# Clone ke www directory
 cd C:\laragon\www
 git clone https://github.com/EkoSaputro14/sistem-pakar-mental-health.git
 cd sistem-pakar-mental-health
-
-# Install dependencies
 composer install
 npm install && npm run build
-
-# Setup environment
 cp .env.example .env
 php artisan key:generate
-
-# Edit .env sesuai konfigurasi database Anda
-# DB_DATABASE=depresi_sispak
-
-# Jalankan migrasi & seeder
 php artisan migrate --seed
-
-# Jalankan server
 php artisan serve
 ```
 
@@ -101,35 +86,24 @@ php artisan serve
 
 ---
 
-## 📊 Arsitektur Diagnosis
+## 📊 Alur Diagnosis
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Mahasiswa mengisi form identitas + jawaban gejala      │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  DiagnosisController::store()                           │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ CertaintyFactorService::diagnose()                │  │
-│  │                                                   │  │
-│  │  Per gejala:                                      │  │
-│  │    CF_HE = expert_cf × user_cf                    │  │
-│  │                                                   │  │
-│  │  Combine (per depresi):                           │  │
-│  │    CF_combined = CF1 + CF2 × (1 − CF1)           │  │
-│  │                                                   │  │
-│  │  Result: depresi dengan CF tertinggi              │  │
-│  └───────────────────────────────────────────────────┘  │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  Simpan: diagnoses + diagnosis_details                  │
-│  Tampilkan: /hasil/{id} (chart + breakdown + rekomendasi)│
-│  Export: PDF via DomPDF                                 │
-└─────────────────────────────────────────────────────────┘
+Mahasiswa buka /diagnosis
+    ↓
+Step 1: Isi identitas (tgl lahir, semester, prodi, tahun angkatan)
+    ↓
+Step 2: Jawab pertanyaan gejala (opsi dari database, bisa di-manage admin)
+    ↓
+Validasi client-side: badge amber jika ada yang belum dijawab
+    ↓
+Submit → CertaintyFactorService menghitung CF per depresi
+    ↓
+Simpan ke database (diagnoses + diagnosis_details)
+    ↓
+Redirect ke /hasil/{id}: nama depresi + confidence + gejala + rekomendasi
+    ↓
+ID tersimpan di localStorage → muncul di riwayat
 ```
 
 ---
@@ -154,9 +128,10 @@ users             → Admin users
 - **Glass Morphism** — `rounded-[2rem]`, `backdrop-blur-xl`, `bg-white/75`
 - **Primary Color** — Teal (`#0d9488`)
 - **Dark Mode** — Full support via Tailwind `class` strategy
-- **Typography** — Figtree font, hierarchy: `text-4xl font-extrabold` → `text-sm font-semibold`
-- **Icons** — Lucide (consistent, modern)
-- **Animations** — Page fade-in, progress bar, sliding nav indicator
+- **Typography** — Figtree font
+- **Icons** — Lucide
+- **Animations** — Hover lift, progress bar, icon scale, page fade-in
+- **Custom Select** — Alpine.js inline dropdown (semester, tahun angkatan, admin forms)
 
 ---
 
@@ -166,4 +141,4 @@ MIT License
 
 ---
 
-**Dibuat untuk UAS Universitas Harkat Negeri Semester 6 ** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
+**Dibuat untuk skripsi/tugas akhir** — Sistem Pakar Diagnosis Depresi Mahasiswa berbasis Web menggunakan Metode Certainty Factor.
