@@ -32,12 +32,25 @@
             current: 0,
             symptoms: @js($symptomSteps),
             answers: @js($initialAnswers),
+            submitError: '',
             get total() { return this.symptoms.length },
             get answered() { return Object.keys(this.answers).filter((key) => this.answers[key] !== '').length },
             get progress() { return this.total ? Math.round((this.answered / this.total) * 100) : 0 },
             get currentSymptom() { return this.symptoms[this.current] || {} },
             next() { if (this.current < this.total - 1) this.current++ },
             previous() { if (this.current > 0) this.current-- },
+            validate() {
+                this.submitError = '';
+                const unanswered = this.symptoms.filter(s => !this.answers[s.id] || this.answers[s.id] === '');
+                if (unanswered.length > 0) {
+                    // Lompat ke pertanyaan yang belum dijawab
+                    const firstUnanswered = this.symptoms.findIndex(s => !this.answers[s.id] || this.answers[s.id] === '');
+                    if (firstUnanswered >= 0) this.current = firstUnanswered;
+                    this.submitError = `${unanswered.length} pertanyaan belum dijawab. Silakan lengkapi semua.`;
+                    return false;
+                }
+                return true;
+            },
         }"
         class="py-6 sm:py-10"
     >
@@ -252,10 +265,16 @@
                 </section>
 
                 <section class="flex flex-col-reverse gap-3 rounded-[2rem] border border-white/70 bg-white/75 p-4 shadow-lg shadow-slate-200/40 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/20 sm:flex-row sm:items-center sm:justify-between">
-                    <button type="button" x-on:click="step = 'identitas'" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
-                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
-                        Ubah Identitas
-                    </button>
+                    <div class="flex flex-col gap-2 sm:flex-1">
+                        <div x-show="submitError" x-transition class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-medium text-rose-700">
+                            <i data-lucide="alert-circle" class="inline h-4 w-4 mr-1 -mt-0.5"></i>
+                            <span x-text="submitError"></span>
+                        </div>
+                        <button type="button" x-on:click="step = 'identitas'" class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
+                            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                            Ubah Identitas
+                        </button>
+                    </div>
 
                     <div class="flex gap-3">
                         <button type="button" x-on:click="previous()" x-bind:disabled="current === 0" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 sm:flex-none">
@@ -266,7 +285,7 @@
                             Lanjut
                             <i data-lucide="arrow-right" class="h-4 w-4"></i>
                         </button>
-                        <button type="submit" x-show="current === total - 1" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:bg-teal-700 sm:flex-none">
+                        <button type="submit" x-show="current === total - 1" x-on:click="if (!validate()) $event.preventDefault()" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:bg-teal-700 sm:flex-none">
                             Hitung Diagnosis
                             <i data-lucide="sparkles" class="h-4 w-4"></i>
                         </button>
